@@ -1,0 +1,28 @@
+# Code Assistant — agent with code execution, file I/O, and shell access
+# Copy to ~/.openjarvis/config.toml
+#
+# Usage:
+#   jarvis ask "Write a Python script that parses CSV files"
+#   jarvis ask "Read main.py and explain the architecture"
+#   jarvis ask --agent orchestrator "Find and fix the bug in test_utils.py"
+
+[engine]
+default = "lmstudio"
+
+[intelligence]
+default_model = "google/gemma-4-12b"
+# default_model = "qwen3.5:35b"    # Better for complex code tasks
+
+[agent]
+default_agent = "orchestrator"      # Multi-turn with tool selection
+max_turns = 10
+
+[tools]
+enabled = ["code_interpreter", "file_read", "file_write", "shell_exec", "web_search", "think", "calculator"]
+
+[analytics]
+enabled = true
+choice_recorded = true
+
+[security]
+profile = "personal"

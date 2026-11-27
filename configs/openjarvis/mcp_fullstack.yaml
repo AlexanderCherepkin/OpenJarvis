@@ -1,0 +1,10 @@
+mcp_servers:
+  git:
+    command: "uvx"
+    args: ["mcp-server-git", "--repository", "/c/AgentJarvis"]
+    description: "Управление ветками, диффами, коммитами и ревью изменений"
+
+  context7:
+    command: "npx"
+    args: ["-y", "@upstash/context7-mcp@latest"]
+    description: "Подгрузка актуальной документации по фреймворкам и библиотекам"
