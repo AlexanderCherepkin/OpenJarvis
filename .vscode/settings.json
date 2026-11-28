@@ -1,7 +1,13 @@
 {
-  "python-envs.defaultEnvManager": "ms-python.python:system",
+  "python-envs.defaultEnvManager": "ms-python.python:venv",
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "terminal.integrated.gpuAcceleration": "on",
   "python.languageServer": "Default",
    "python.analysis.extraPaths": [
        "M:\\MyMCPTools\\.venv\\Lib\\site-packages"
-     ]
+     ],
+     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}"
+  ]
 }

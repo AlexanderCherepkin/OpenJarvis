@@ -101,6 +101,41 @@ class DSPyAgentOptimizer:
             enable_memory_cache=True,
             restrict_pickle=True,
         )
+        if getattr(dspy.settings, "lm", None) is None:
+            import os
+
+            from openjarvis.core.config import load_config
+
+            jcfg = load_config()
+            model_name = (
+                self.config.task_lm
+                or getattr(jcfg.intelligence, "default_model", "")
+                or "google/gemma-4-12b"
+            )
+            engine_name = (
+                getattr(jcfg.intelligence, "preferred_engine", "")
+                or getattr(jcfg.engine, "default", "")
+                or "lmstudio"
+            )
+            lm_kwargs: Dict[str, Any] = {}
+            if engine_name == "lmstudio":
+                if not model_name.startswith("openai/"):
+                    model_name = f"openai/{model_name}"
+                lm_kwargs["api_base"] = os.environ.get(
+                    "OPENAI_API_BASE", "http://localhost:1234/v1"
+                )
+                lm_kwargs["api_key"] = os.environ.get("OPENAI_API_KEY", "lm-studio")
+            elif engine_name == "ollama":
+                if not model_name.startswith("ollama_chat/"):
+                    model_name = f"ollama_chat/{model_name}"
+                lm_kwargs["api_base"] = "http://localhost:11434"
+            elif os.environ.get("OPENAI_API_BASE"):
+                if "/" not in model_name:
+                    model_name = f"openai/{model_name}"
+                lm_kwargs["api_base"] = os.environ["OPENAI_API_BASE"]
+                lm_kwargs["api_key"] = os.environ.get("OPENAI_API_KEY", "lm-studio")
+
+            dspy.configure(lm=dspy.LM(model_name, **lm_kwargs))
         # Convert traces to dspy.Example objects
         examples = []
         for t in traces:

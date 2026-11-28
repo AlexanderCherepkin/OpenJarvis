@@ -52,6 +52,8 @@ dependencies = [
     # IANA time-zone fallback for Windows and minimal container images.
     "tzdata>=2025.3",
     "websockets>=15.0.1",
+    "espeakng-loader>=0.2.4",
+    "phonemizer-fork>=3.3.2",
 ]
 
 [project.optional-dependencies]

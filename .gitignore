@@ -137,3 +137,12 @@ node_modules/
 *.gguf
 *.safetensors
 *.exe
+
+# Local TTS models, audio & temp artifacts
+workspace/jarvis_voice/tts_model/
+workspace/jarvis_voice/tts_model_ruslan/*.onnx
+workspace/jarvis_voice/*.mp3
+workspace/jarvis_voice/**/*.wav
+workspace/ping.txt
+*.bak
+workspace/jarvis_voice/tts_model_ruslan/

@@ -1,6 +1,3 @@
-mkdir -p /c/OpenJarvis/skills/fullstack-blueprint
-
-cat << 'EOF' > /c/OpenJarvis/skills/fullstack-blueprint/SKILL.md
 ---
 name: fullstack-blueprint
 description: >
