@@ -1,5 +1,6 @@
 {
   "python-envs.defaultEnvManager": "ms-python.python:system",
+  "python.languageServer": "Default",
    "python.analysis.extraPaths": [
        "M:\\MyMCPTools\\.venv\\Lib\\site-packages"
      ]
