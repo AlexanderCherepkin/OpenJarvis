@@ -146,3 +146,4 @@ workspace/jarvis_voice/**/*.wav
 workspace/ping.txt
 *.bak
 workspace/jarvis_voice/tts_model_ruslan/
+Usersshyri.openjarvisconfig.toml
