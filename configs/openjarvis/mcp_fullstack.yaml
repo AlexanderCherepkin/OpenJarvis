@@ -1,10 +1,90 @@
+# OpenJarvis MCP Servers Configuration
+# Все кастомные и стандартные серверы для агентной системы OpenJarvis
+# Работает в связке с LM Studio (google/gemma-4-12b-it на порту 1234)
+
 mcp_servers:
+  # ═══════════════════════════════════════════════════════════════
+  # КАСТОМНЫЕ СЕРВЕРЫ (ваши Python-инструменты)
+  # Все запускаются через единый venv: M:\MyMCPTools\.venv (Python 3.14.7 + mcp 2.3.0)
+  # ═══════════════════════════════════════════════════════════════
+  geolocator:
+    command: "M:\\MyMCPTools\\.venv\\Scripts\\python.exe"
+    args: ["M:\\MyMCPTools\\my_geo_mcp.py"]
+    description: "Геокодинг городов через OpenStreetMap Nominatim (lat/lon/display_name)"
+
+  duckduckgo-search:
+    command: "M:\\MyMCPTools\\.venv\\Scripts\\python.exe"
+    args: ["M:\\MyMCPTools\\my_search_mcp.py"]
+    description: "Поиск в DuckDuckGo: web_search (веб) и news_search (новости), JSON с title/url/snippet"
+
+  brave_browser:
+    command: "M:\\MyMCPTools\\.venv\\Scripts\\python.exe"
+    args: ["M:\\MyMCPTools\\brave_browser.py"]
+    description: "Браузерный инструмент Brave для веб-взаимодействия"
+
+  # ═══════════════════════════════════════════════════════════════
+  # СТАНДАРТНЫЕ СЕРВЕРЫ (из mcp.json LM Studio, продублированы для OpenJarvis)
+  # ═══════════════════════════════════════════════════════════════
   git:
     command: "uvx"
-    args: ["mcp-server-git", "--repository", "/c/AgentJarvis"]
-    description: "Управление ветками, диффами, коммитами и ревью изменений"
+    args: ["--from", "mcp-server-git", "python", "-m", "mcp_server_git"]
+    description: "Управление ветками, диффами, коммитами и ревью изменений в C:\\OpenJarvis"
 
   context7:
     command: "npx"
-    args: ["-y", "@upstash/context7-mcp@latest"]
-    description: "Подгрузка актуальной документации по фреймворкам и библиотекам"
+    args: ["-y", "@upstash/context7-mcp"]
+    env:
+      CONTEXT7_API_KEY: "${env:CONTEXT7_API_KEY}"
+    description: "Подгрузка актуальной документации по фреймворкам и библиотекам 2026 года"
+
+  filesystem:
+    command: "npx"
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-filesystem"
+      - "M:\\MyMCPTools"
+      - "C:\\OpenJarvis"
+    description: "Доступ к файловой системе: чтение/запись в рабочих папках проекта"
+
+  fetch:
+    command: "uvx"
+    args: ["--from", "mcp-server-fetch", "python", "-m", "mcp_server_fetch"]
+    description: "HTTP-fetch внешних URL с парсингом контента"
+
+  sequential-thinking:
+    command: "npx"
+    args: ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    description: "Многошаговое рассуждение модели перед ответом (chain-of-thought)"
+
+  memory:
+    command: "npx"
+    args: ["-y", "@modelcontextprotocol/server-memory"]
+    description: "Долгосрочная память агента между сессиями"
+
+  github:
+    command: "npx"
+    args: ["-y", "@modelcontextprotocol/server-github"]
+    env:
+      GITHUB_PERSONAL_ACCESS_TOKEN: "${env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+    description: "Работа с GitHub: issues, PR, репозитории через PAT"
+
+  tavily:
+    command: "npx"
+    args: ["-y", "tavily-mcp@latest"]
+    env:
+      TAVILY_API_KEY: "${env:TAVILY_API_KEY}"
+    description: "Поиск в интернете через Tavily (альтернатива DuckDuckGo с richer snippets)"
+
+  time:
+    command: "uvx"
+    args: ["--from", "mcp-server-time", "python", "-m", "mcp_server_time"]
+    description: "Текущее время и работа с часовыми поясами"
+
+  code-sandbox:
+    command: "npx"
+    args: ["-y", "code-sandbox-mcp"]
+    description: "Изолированное выполнение кода в песочнице"
+
+  vercel:
+    url: "https://mcp.vercel.com"
+    description: "Деплой и управление Vercel-проектами"

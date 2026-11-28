@@ -1,17 +1,17 @@
-# OpenJarvis configuration — GLM-4.7-Flash eval on 8x A100-80GB
+# OpenJarvis configuration — Gemma 4 12B via LM Studio (local)
 
 # ═══════════════════════════════════════════════════════════════
 # PILLAR 1: Intelligence — The Model
 # ═══════════════════════════════════════════════════════════════
 [intelligence]
-default_model = "zai-org/GLM-4.7-Flash"   # HuggingFace model ID
-fallback_model = "glm-4.7-flash"          # Catalog alias fallback
-preferred_engine = "vllm"                 # MoE model, vLLM is best for A100s
+default_model = "google/gemma-4-12b-it"   # LM Studio model ID (matches "Loaded Models")
+fallback_model = "gemma-4-12b-it"         # Catalog alias fallback
+preferred_engine = "lmstudio"             # ← LM Studio Local Server
 provider = "local"                        # Running locally on this machine
-quantization = "none"                     # Full precision, we have 640GB VRAM
-# Generation defaults for eval
-temperature = 0.0                         # Deterministic for reproducibility
-max_tokens = 2048                         # Standard eval output length
+quantization = "none"                     # GGUF already quantized at download
+# Generation defaults for interactive use
+temperature = 0.7                         # Creative (was 0.0 for eval)
+max_tokens = 2048
 top_p = 0.9
 top_k = 40
 repetition_penalty = 1.0
@@ -40,7 +40,7 @@ enabled = true
 # PILLAR 4: Engine — The Inference Runtime
 # ═══════════════════════════════════════════════════════════════
 [engine]
-default = "vllm"
+default = "lmstudio"                      # ← default engine switched
 
 [engine.vllm]
 host = "http://localhost:8001"            # vLLM serving port
@@ -53,6 +53,9 @@ host = "http://localhost:30000"
 
 [engine.llamacpp]
 host = "http://localhost:8080"
+
+[engine.lmstudio]                         # ← NEW: LM Studio Local Server
+host = "http://127.0.0.1:1234"            # OpenAI-compatible API
 
 [engine.exo]
 host = "http://localhost:52415"
